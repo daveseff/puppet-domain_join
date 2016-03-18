@@ -6,6 +6,8 @@ before_install: rm Gemfile.lock || true
 branches:
   only:
     - master
+notifications:
+  email: false
 rvm:
   - 1.9.3
   - 2.1.0
