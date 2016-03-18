@@ -1,60 +1,71 @@
+[![Build Status](https://travis-ci.org/rnelson0/puppet-domain_join.png?branch=master)](https://travis-ci.org/rnelson0/puppet-domain_join)
+[![Puppet Forge](http://img.shields.io/puppetforge/v/rnelson0/domain_join.svg)](https://forge.puppetlabs.com/rnelson0/domain_join)
+[![Puppet Forge Downloads](http://img.shields.io/puppetforge/dt/rnelson0/domain_join.svg)](https://forge.puppetlabs.com/rnelson0/domain_join)
+[![Stories in Ready](https://badge.waffle.io/rnelson0/puppet-domain_join.svg?label=ready&title=Ready)](http://waffle.io/rnelson0/puppet-modules)
+[![Stories In Progress](https://badge.waffle.io/rnelson0/puppet-domain_join.svg?label=in progress&title=In Progress)](http://waffle.io/rnelson0/puppet-modules)
+
 #### Table of Contents
 
 1. [Overview](#overview)
 2. [Module Description - What the module does and why it is useful](#module-description)
 3. [Setup - The basics of getting started with domain_join](#setup)
     * [What domain_join affects](#what-domain_join-affects)
-    * [Setup requirements](#setup-requirements)
     * [Beginning with domain_join](#beginning-with-domain_join)
 4. [Usage - Configuration options and additional functionality](#usage)
-5. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
 5. [Limitations - OS compatibility, etc.](#limitations)
-6. [Development - Guide for contributing to the module](#development)
 
 ## Overview
 
-A one-maybe-two sentence summary of what the module does/what problem it solves. This is your 30 second elevator pitch for your module. Consider including OS/Puppet version it works with.       
+Provide the most minimal configuration required to allow a Linux node to join a Windows domain.
 
 ## Module Description
 
-If applicable, this section should have a brief description of the technology the module integrates with and what that integration enables. This section should answer the questions: "What does this module *do*?" and "Why would I use it?"
+This module is intended for the lazy Linux admin who wants their Linux nodes to join a Windows domain without needing to manage the components. Rather than managing SSSD, Samba, and Kerberos, just manage "the ability to join a domain"!
 
-If your module has a range of functionality (installation, configuration, management, etc.) this is the time to mention it.
+Unfortunately, if you want to manage those services separately, this module may not be for you. You may still manage the domain join script and DNS settings only, if you like. [planned]
 
 ## Setup
 
 ### What domain_join affects
 
-* A list of files, packages, services, or operations that the module will alter, impact, or execute on the system it's installed on.
-* This is a great place to stick any warnings.
-* Can be in list or paragraph form. 
-
-### Setup Requirements **OPTIONAL**
-
-If your module requires anything extra before setting up (pluginsync enabled, etc.), mention it here. 
+* DNS resolution through `/etc/resolv.conf`
+* SSSD, Samba, and Kerberos configs (`/etc/sssd/sssd.conf`, `/etc/samba/smb.conf`, `/etc/krb5.conf`)
+* A domain join shell script at `/usr/local/bin/domain_join`, that includes credentials used to join the domain.
+    * It is *highly* recommended that you follow the [Principle of Least Privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilegehttps://en.wikipedia.org/wiki/Principle_of_least_privilege) and do *not* use a Domain Admin account or similar.
 
 ### Beginning with domain_join
 
-The very basic steps needed for a user to get the module up and running. 
+    # Without hiera
+    class { 'domain_join':
+      domain_fqdn => 'example.com',
+      domain_shortname => 'example',
+      ad_dns           => ['10.0.0.1', '10.0.0.2'],
+      register_account => 'domainjoin',
+      register_password => 'Sup4rS3krEt',
+      additional_search_domains => ['web.example.com', 'b2b.example.com'],
+    }
 
-If your most recent release breaks compatibility or requires particular steps for upgrading, you may wish to include an additional section here: Upgrading (For an example, see http://forge.puppetlabs.com/puppetlabs/firewall).
+    # With Hiera
+    # Manifest:
+    include domain_join
+    
+    # Hiera yaml:
+    ---
+    domain_join::domain_fqdn: example.com
+    domain_join::domain_shortname: example
+    domain_join::ad_dns:
+      - 10.0.0.1
+      - 10.0.0.2
+    domain_join::register_account: domainjoin
+    domain_join::register_password: 'Sup4rS3krEt'
+    domain_join::additional_search_domains:
+      - web.example.com
+      - b2b.example.com
 
 ## Usage
 
-Put the classes, types, and resources for customizing, configuring, and doing the fancy stuff with your module here. 
-
-## Reference
-
-Here, list the classes, types, providers, facts, etc contained in your module. This section should include all of the under-the-hood workings of your module so people know what the module is touching on their system but don't need to mess with things. (We are working on automating this section!)
+You may follow the above reference for simple domain joins. If you wish to only manage the domain_join script, ... [planned]
 
 ## Limitations
 
-This is where you list OS compatibility, version compatibility, etc.
-
-## Development
-
-Since your module is awesome, other users will want to play with it. Let them know what the ground rules for contributing are.
-
-## Release Notes/Contributors/Etc **Optional**
-
-If you aren't using changelog, put your release notes here (though you should consider using changelog). You may also add any additional sections you feel are necessary or important to include here. Please use the `## ` header. 
+This module will most likely be incompatible when used in the same catalog as any module that directly manages sssd, samba, or kerberos packages or configs. See the compatibility tab or [metadata.json](metadata.json) for tested OS support.
