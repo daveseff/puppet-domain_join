@@ -1,0 +1,8 @@
+echo '<%= @register_password %>' | kinit <%= @register_account %>
+net ads join -k
+net ads dns register
+klist -k
+authconfig --update --enablesssd  --enablerfc2307bis --enablesssdauth --enablemkhomedir
+chmod 0600 /etc/sssd/sssd.conf
+systemctl restart sshd.service
+systemctl restart sssd.service
