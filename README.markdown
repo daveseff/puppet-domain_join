@@ -37,11 +37,11 @@ Unfortunately, if you want to manage those services separately, this module may 
 
     # Without hiera
     class { 'domain_join':
-      domain_fqdn => 'example.com',
-      domain_shortname => 'example',
-      ad_dns           => ['10.0.0.1', '10.0.0.2'],
-      register_account => 'domainjoin',
-      register_password => 'Sup4rS3krEt',
+      domain_fqdn               => 'example.com',
+      domain_shortname          => 'example',
+      ad_dns                    => ['10.0.0.1', '10.0.0.2'],
+      register_account          => 'domainjoin',
+      register_password         => 'Sup4rS3krEt',
       additional_search_domains => ['web.example.com', 'b2b.example.com'],
     }
 

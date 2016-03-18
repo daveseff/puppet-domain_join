@@ -12,8 +12,8 @@ class domain_join (
     'krb5-workstation',
     'krb5-libs',
     'sssd-common',
-    'sssd-ad', 
-    'samba-common'
+    'sssd-ad',
+    'samba-common',
   ]
   package { $required_packages:
     ensure => present,

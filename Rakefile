@@ -32,6 +32,7 @@ Rake::Task[:coverage].clear
 Rake::Task[:lint].clear
 
 PuppetLint.configuration.relative = true
+PuppetLint.configuration.disable_arrow_alignment
 PuppetLint.configuration.disable_80chars
 PuppetLint.configuration.disable_class_inherits_from_params_class
 PuppetLint.configuration.disable_class_parameter_defaults
