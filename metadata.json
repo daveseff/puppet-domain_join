@@ -1,6 +1,6 @@
 {
   "name": "rnelson0-domain_join",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "author": "rnelson0",
   "summary": "Provides just enough configuration to join a Linux node to an Active Directory domain.",
   "license": "Apache-2.0",
@@ -15,19 +15,16 @@
   ],
   "operatingsystem_support": [
     {
-      "operatingsystem": "Debian",
-      "operatingsystemrelease": [
-        "6",
-        "7"
-      ]
-    },
-    {
       "operatingsystem": "RedHat",
       "operatingsystemrelease": [
-        "5",
-        "6",
         "7"
       ]
+    }
+  ],
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">=3.0.0"
     }
   ]
 }

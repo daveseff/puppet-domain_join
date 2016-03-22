@@ -29,4 +29,30 @@ describe 'domain_join', :type => :class do
     it { is_expected.to contain_file('/etc/sssd/sssd.conf') }
     it { is_expected.to contain_file('/usr/local/bin/domain-join') }
   end
+
+  context 'with manage_services false' do
+    let :params do
+      {
+        :manage_services => false,
+      }
+    end
+
+    it { is_expected.not_to contain_package('sssd') }
+    it { is_expected.not_to contain_file('/etc/sssd/sssd.conf') }
+    it { is_expected.to contain_file('/etc/resolv.conf') }
+    it { is_expected.to contain_file('/usr/local/bin/domain-join') }
+  end
+
+  context 'with manage_services and manage_resolver false' do
+    let :params do
+      {
+        :manage_services => false,
+        :manage_resolver => false,
+      }
+    end
+    it { is_expected.not_to contain_package('sssd') }
+    it { is_expected.not_to contain_file('/etc/sssd/sssd.conf') }
+    it { is_expected.not_to contain_file('/etc/resolv.conf') }
+    it { is_expected.to contain_file('/usr/local/bin/domain-join') }
+  end
 end

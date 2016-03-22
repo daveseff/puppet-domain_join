@@ -6,8 +6,10 @@ class domain_join (
   $register_account,                  # Account for registering with the domain, example: Administrator
   $register_password,                 # Password for the registration domain, example: password
   $additional_search_domains = undef, # List of additional domains to search in resolv.conf, example: subdomain.example.com
+  $manage_services = true,            # Whether or not the services are managed
+  $manage_resolver = true,            # Whether or not the resolver configuration is managed
 ) {
-  $required_packages = [
+  $service_packages = [
     'oddjob-mkhomedir',
     'krb5-workstation',
     'krb5-libs',
@@ -15,29 +17,34 @@ class domain_join (
     'sssd-ad',
     'samba-common',
   ]
-  package { $required_packages:
-    ensure => present,
+
+  if $manage_services {
+    package { $service_packages:
+      ensure => present,
+    }
+
+    # The required packages contain a configuration file. Ensure our configuration file is added after the package.
+    Package<| |> -> File<| tag == 'domain_join' |>
+
+    file {'/etc/krb5.conf':
+      ensure => present,
+      content => template('domain_join/krb5.conf.erb'),
+    }
+    file {'/etc/samba/smb.conf':
+      ensure => present,
+      content => template('domain_join/smb.conf.erb'),
+    }
+    file {'/etc/sssd/sssd.conf':
+      ensure => present,
+      content => template('domain_join/sssd.conf.erb'),
+    }
   }
 
-  # Most of the packages above require a configuration file, but after the corresponding package. We can simplify
-  # the requirement to be all packages prior to our files
-  Package<| |> -> File<| tag == 'domain_join' |>
-
-  file  {'/etc/resolv.conf':
-    ensure => present,
-    content => template('domain_join/resolv.conf.erb'),
-  }
-  file {'/etc/krb5.conf':
-    ensure => present,
-    content => template('domain_join/krb5.conf.erb'),
-  }
-  file {'/etc/samba/smb.conf':
-    ensure => present,
-    content => template('domain_join/smb.conf.erb'),
-  }
-  file {'/etc/sssd/sssd.conf':
-    ensure => present,
-    content => template('domain_join/sssd.conf.erb'),
+  if $manage_resolver {
+    file  {'/etc/resolv.conf':
+      ensure => present,
+      content => template('domain_join/resolv.conf.erb'),
+    }
   }
 
   # Finally we need a script to join the domain. This should be called during provisioning

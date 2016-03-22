@@ -13,6 +13,7 @@
     * [Beginning with domain_join](#beginning-with-domain_join)
 4. [Usage - Configuration options and additional functionality](#usage)
 5. [Limitations - OS compatibility, etc.](#limitations)
+6. [Creating a Least Privilege account](#creating-a-least-privilege-account)
 
 ## Overview
 
@@ -22,16 +23,17 @@ Provide the most minimal configuration required to allow a Linux node to join a 
 
 This module is intended for the lazy Linux admin who wants their Linux nodes to join a Windows domain without needing to manage the components. Rather than managing SSSD, Samba, and Kerberos, just manage "the ability to join a domain"!
 
-Unfortunately, if you want to manage those services separately, this module may not be for you. You may still manage the domain join script and DNS settings only, if you like. [planned]
+Unfortunately, if you want to manage those services separately, this module may not be perfect fit for you. You may skip the service and resolver configuration by setting one or both of `manage_services` and `manage_resolver` to false.
 
 ## Setup
 
 ### What domain_join affects
 
-* DNS resolution through `/etc/resolv.conf`
-* SSSD, Samba, and Kerberos configs (`/etc/sssd/sssd.conf`, `/etc/samba/smb.conf`, `/etc/krb5.conf`)
+* DNS resolution through `/etc/resolv.conf` unless `manage_resolver` is false.
+* SSSD, Samba, and Kerberos configs (`/etc/sssd/sssd.conf`, `/etc/samba/smb.conf`, `/etc/krb5.conf`) unless `manage_services` is false.
 * A domain join shell script at `/usr/local/bin/domain_join`, that includes credentials used to join the domain.
-    * It is *highly* recommended that you follow the [Principle of Least Privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilegehttps://en.wikipedia.org/wiki/Principle_of_least_privilege) and do *not* use a Domain Admin account or similar.
+    * It is *highly* recommended that you follow the [Principle of Least Privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilegehttps://en.wikipedia.org/wiki/Principle_of_least_privilege) and do *not* use a Domain Admin account or similar. See [Creating a Least Privilege Account](#creating-a-least-privilege-account) for more information.
+
 
 ### Beginning with domain_join
 
@@ -64,8 +66,34 @@ Unfortunately, if you want to manage those services separately, this module may 
 
 ## Usage
 
-You may follow the above reference for simple domain joins. If you wish to only manage the domain_join script, ... [planned]
+Follow the above reference for simple domain joins. You can control the service and resolver configuration with two booleans:
+    class { 'domain_join':
+        ... # other options
+        manage_services => false,
+        manage_resolver => false,
+    }
+
+    ---
+    domain_join::manage_services: false
+    domain_join::manage_resolver: false
 
 ## Limitations
 
-This module will most likely be incompatible when used in the same catalog as any module that directly manages sssd, samba, or kerberos packages or configs. See the compatibility tab or [metadata.json](metadata.json) for tested OS support.
+This module may cause duplicate resource errors if used in the same catalog as any module that directly manages sssd, samba, or kerberos packages or configs unless `manage_services` is false. See the compatibility tab or [metadata.json](metadata.json) for tested OS support.
+
+## Creating a Least Privilege account
+It is highly recommended that the `register_account` be an account that has the ability to join computers to domains and nothing else. The following is an overly simplistic method to create such a user. This is suitable for a lab but may need further review for use in production. Use at your own risk.
+* Create an account, ex: **domainjoin**, in the appropriate hierarchy of your Active Directory. It is recommend that **User cannot change password** and **Password never expires** are selected.
+* Delegate the ability to manage computer objects to the user with the *Active Directory Users and Computers* snap in (from [JSI Tip 8144](http://windowsitpro.com/windows-server/jsi-tip-8144-how-can-i-allow-ordinary-user-add-computer-domain) with tweaks).
+ * Open the *Active Directory Users and Computers* snap-in.
+ * Right click the container under which you want the computers added (ex: `Computers`) and choose *Delegate Control*.
+ * Click *Next*.
+ * Click *Add* and supply your user account(s), e.g **domainjoin**. Click *Next* when complete.
+ * Select *Create custom task to delegate* and click *Next*.
+ * Select *Only the following objects in the folder* and then *Computer objects*. Click *Next*.
+ * Under **Permissions**, check *Create All Child Objects* and *Write All Properties*. Click *Next*.
+ * Click *Finish*
+
+You may also need to run the following command to [increase the Machine Account Quota to a very large number](https://technet.microsoft.com/en-us/library/dd391926%28v=ws.10%29.aspx). This represents the number of machines a user can join to the domain and defaults to 10 for the domain. This can only be set at the domain level.
+
+    Set-ADDomain example.com -Replace @{"ms-ds-MachineAccountQuota"="10000"}
