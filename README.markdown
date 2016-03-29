@@ -77,6 +77,10 @@ Follow the above reference for simple domain joins. You can control the service 
     domain_join::manage_services: false
     domain_join::manage_resolver: false
 
+Additional configuration options include:
+
+`createcomputer`: Name of the AD container to join the new node to, typically an OU or a built-in container object.
+
 ## Limitations
 
 This module may cause duplicate resource errors if used in the same catalog as any module that directly manages sssd, samba, or kerberos packages or configs unless `manage_services` is false. See the compatibility tab or [metadata.json](metadata.json) for tested OS support.
