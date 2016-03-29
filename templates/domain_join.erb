@@ -1,5 +1,5 @@
 echo '<%= @register_password %>' | kinit <%= @register_account %>
-net ads join -k
+net ads join -k <%- if @createcomputer then %>createcomputer="<%= @createcomputer %>"<%- end %>
 net ads dns register
 klist -k
 authconfig --update --enablesssd  --enablerfc2307bis --enablesssdauth --enablemkhomedir

@@ -55,4 +55,13 @@ describe 'domain_join', :type => :class do
     it { is_expected.not_to contain_file('/etc/resolv.conf') }
     it { is_expected.to contain_file('/usr/local/bin/domain-join') }
   end
+  
+  context 'with container' do
+    let :params do
+      {
+        :createcomputer => 'container',
+      }
+    end
+    it { is_expected.to contain_file('/usr/local/bin/domain-join').with_content(/net ads join -k createcomputer="container"/) }
+  end
 end

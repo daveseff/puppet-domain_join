@@ -8,6 +8,7 @@ class domain_join (
   $additional_search_domains = undef, # List of additional domains to search in resolv.conf, example: subdomain.example.com
   $manage_services = true,            # Whether or not the services are managed
   $manage_resolver = true,            # Whether or not the resolver configuration is managed
+  $createcomputer = undef,            # Name of the container for the newly joined nodes. Optional.
 ) {
   $service_packages = [
     'oddjob-mkhomedir',
