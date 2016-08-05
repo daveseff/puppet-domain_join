@@ -9,6 +9,8 @@ class domain_join (
   $manage_services = true,            # Whether or not the services are managed
   $manage_resolver = true,            # Whether or not the resolver configuration is managed
   $createcomputer = undef,            # Name of the container for the newly joined nodes. Optional.
+  $create_ptr = true,                 # Create the PTR record in addition to the A record.
+  $interface = 'eno16780032',         # The interface associated with the DNS entry. Default for EL7 VMs.
 ) {
   $service_packages = [
     'oddjob-mkhomedir',

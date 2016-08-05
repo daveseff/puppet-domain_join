@@ -1,7 +1,12 @@
 echo '<%= @register_password %>' | kinit <%= @register_account %>
 net ads join -k <%- if @createcomputer then %>createcomputer="<%= @createcomputer %>"<%- end %>
 net ads dns register
+<%- if @create_ptr then %>
+# Grab the IP of the specified interface, reverses it, adds .in-addr-arpa and send to AD DSN with nsupdate
+# The -g flag is to support kerberos
+echo -e "update add `ip -h -4 addr show <%= @interface %> | grep -Po 'inet \K[\d.]+' | awk 'BEGIN{FS="."}{print $4"."$3"."$2"."$1".in-addr.arpa"}'` 3600 PTR `hostname -f`.\nsend" | nsupdate -g
 klist -k
+<%- end %>
 authconfig --update --enablesssd  --enablerfc2307bis --enablesssdauth --enablemkhomedir
 chmod 0600 /etc/sssd/sssd.conf
 systemctl restart sshd.service
