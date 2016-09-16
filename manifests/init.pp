@@ -27,7 +27,7 @@ class domain_join (
     }
 
     # The required packages contain a configuration file. Ensure our configuration file is added after the package.
-    Package<| |> -> File<| tag == 'domain_join' |>
+    Package<| tag == 'domain_join' |> -> File<| tag == 'domain_join' |>
 
     file {'/etc/krb5.conf':
       ensure => present,
