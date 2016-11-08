@@ -6,3 +6,4 @@
   log file = /var/log/samba/%m.log
   realm = <%= @domain_fqdn %>
   security = ads
+  <% if @disable_smbv1 %>min protocol = SMB2<%- end %>

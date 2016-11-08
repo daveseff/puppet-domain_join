@@ -31,6 +31,8 @@ group :test do
 end
 
 group :development do
+  gem "guard"
+  gem "guard-rake"
 end
 
 group :system_tests do
