@@ -10,4 +10,3 @@ klist -k
 authconfig --update --enablesssd  --enablerfc2307bis --enablesssdauth --enablemkhomedir
 chmod 0600 /etc/sssd/sssd.conf
 systemctl restart sshd.service
-systemctl restart sssd.service
