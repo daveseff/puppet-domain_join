@@ -19,6 +19,7 @@ class domain_join (
     'sssd-common',
     'sssd-ad',
     'samba-common',
+    'samba-common-tools',
   ]
 
   if $manage_services {
