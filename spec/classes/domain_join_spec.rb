@@ -21,6 +21,7 @@ describe 'domain_join', :type => :class do
     it { is_expected.to contain_package('krb5-workstation') }
     it { is_expected.to contain_package('krb5-libs') }
     it { is_expected.to contain_package('samba-common') }
+    it { is_expected.to contain_package('samba-common-tools') }
     it { is_expected.to contain_package('sssd-ad') }
     it { is_expected.to contain_package('sssd-common') }
     it { is_expected.to contain_file('/etc/resolv.conf') }
