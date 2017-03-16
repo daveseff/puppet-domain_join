@@ -1,8 +1,8 @@
 [![Build Status](https://travis-ci.org/rnelson0/puppet-domain_join.png?branch=master)](https://travis-ci.org/rnelson0/puppet-domain_join)
 [![Puppet Forge](http://img.shields.io/puppetforge/v/rnelson0/domain_join.svg)](https://forge.puppetlabs.com/rnelson0/domain_join)
 [![Puppet Forge Downloads](http://img.shields.io/puppetforge/dt/rnelson0/domain_join.svg)](https://forge.puppetlabs.com/rnelson0/domain_join)
-[![Stories in Ready](https://badge.waffle.io/rnelson0/puppet-domain_join.svg?label=ready&title=Ready)](http://waffle.io/rnelson0/puppet-modules)
-[![Stories In Progress](https://badge.waffle.io/rnelson0/puppet-domain_join.svg?label=in progress&title=In Progress)](http://waffle.io/rnelson0/puppet-modules)
+[![Stories in Ready](https://badge.waffle.io/rnelson0/puppet-domain_join.svg?label=Ready&title=Ready)](http://waffle.io/rnelson0/puppet-modules)
+[![Stories In Progress](https://badge.waffle.io/rnelson0/puppet-domain_join.svg?label=in%20progress&title=In%20Progress)](http://waffle.io/rnelson0/puppet-modules)
 
 #### Table of Contents
 
