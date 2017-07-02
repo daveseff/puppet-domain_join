@@ -66,8 +66,10 @@ class domain_join (
     exec { 'join the domain':
       command => '/usr/local/bin/domain-join -j',
       unless  => '/usr/local/bin/domain-join -q',
-      require => File['/etc/sssd/sssd.conf'],
     }
   }
 
+  if ($manage_services and $join_domain) {
+    File['/etc/sssd/sssd.conf'] -> Exec['join the domain']
+  }
 }
