@@ -7,14 +7,20 @@ describe 'domain_join', :type => :class do
         facts
       end
       context 'with defaults for all parameters' do
-        it { is_expected.to create_class('domain_join') }
+        if facts[:operatingsystemmajrelease] == '7'
+            it { is_expected.to contain_package('samba-common-tools') }
+        elsif facts[:operatingsystemmajrelease] == '6'
+            it { is_expected.not_to contain_package('samba-common-tools') }
+        end
         it { is_expected.to contain_package('oddjob-mkhomedir') }
         it { is_expected.to contain_package('krb5-workstation') }
         it { is_expected.to contain_package('krb5-libs') }
         it { is_expected.to contain_package('samba-common') }
-    it { is_expected.to contain_package('samba-common-tools') }
         it { is_expected.to contain_package('sssd-ad') }
         it { is_expected.to contain_package('sssd-common') }
+        it { is_expected.to contain_package('sssd-tools') }
+        it { is_expected.to contain_package('ldb-tools') }
+        it { is_expected.to create_class('domain_join') }
         it { is_expected.to contain_file('/etc/resolv.conf') }
         it { is_expected.to contain_file('/etc/krb5.conf') }
         it { is_expected.to contain_file('/etc/samba/smb.conf') }

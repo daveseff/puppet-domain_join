@@ -16,15 +16,29 @@ class domain_join (
   $interface = 'eno16780032',         # The interface associated with the DNS entry. Default for EL7 VMs.
   $join_domain = true,                # set to false to just run configuration and not join the domain.
 ) {
-  $service_packages = [
+
+  $service_packages_tmp = [
     'oddjob-mkhomedir',
     'krb5-workstation',
     'krb5-libs',
     'sssd-common',
     'sssd-ad',
+    'sssd-tools',
+    'ldb-tools',
     'samba-common',
-    'samba-common-tools',
   ]
+
+
+  ## Since this is a RHEL-based module, we need to distinguish between RHEL 6 and 7
+  ##   and then add 'samba-common-tools' package to the package list for RHEL 7 only
+  if downcase( $facts['os']['family'] ) == 'redhat' {
+    if $facts['os']['release']['major'] == '6' {
+      $service_packages = $service_packages_tmp
+    }
+    if $facts['os']['release']['major'] == '7' {
+      $service_packages = concat($service_packages_tmp, ['samba-common-tools'])
+    }
+  }
 
   if $manage_services {
     ensure_packages($service_packages, {'ensure' => 'present'})
