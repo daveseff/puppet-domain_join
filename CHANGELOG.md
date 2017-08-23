@@ -4,6 +4,26 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not impact the functionality of the module.
 
+## [v0.5.1](https://github.com/rnelson0/puppet-domain_join/tree/v0.5.1) (2017-08-23)
+[Full Changelog](https://github.com/rnelson0/puppet-domain_join/compare/v0.5.0...v0.5.1)
+
+**Closed issues:**
+
+- RH6 support [\#14](https://github.com/rnelson0/puppet-domain_join/issues/14)
+
+**Merged pull requests:**
+
+- Feature/rhel6-rhel7 compatibility [\#31](https://github.com/rnelson0/puppet-domain_join/pull/31) ([chichimedina](https://github.com/chichimedina))
+- Remove puppet 3 testing, add puppet 5 testing [\#30](https://github.com/rnelson0/puppet-domain_join/pull/30) ([rnelson0](https://github.com/rnelson0))
+
+## [v0.5.0](https://github.com/rnelson0/puppet-domain_join/tree/v0.5.0) (2017-05-25)
+[Full Changelog](https://github.com/rnelson0/puppet-domain_join/compare/v0.4.0...v0.5.0)
+
+**Merged pull requests:**
+
+- Autojoin [\#25](https://github.com/rnelson0/puppet-domain_join/pull/25) ([rnelson0](https://github.com/rnelson0))
+- Add auto join and idempotency checks [\#24](https://github.com/rnelson0/puppet-domain_join/pull/24) ([rnelson0](https://github.com/rnelson0))
+
 ## [v0.4.0](https://github.com/rnelson0/puppet-domain_join/tree/v0.4.0) (2017-02-03)
 [Full Changelog](https://github.com/rnelson0/puppet-domain_join/compare/v0.3.2...v0.4.0)
 
@@ -24,7 +44,6 @@ These should not impact the functionality of the module.
 **Merged pull requests:**
 
 - Create a PTR record during registration. [\#9](https://github.com/rnelson0/puppet-domain_join/pull/9) ([rnelson0](https://github.com/rnelson0))
-- August msync [\#8](https://github.com/rnelson0/puppet-domain_join/pull/8) ([rnelson0](https://github.com/rnelson0))
 - Update from rnelson0's modulesync [\#7](https://github.com/rnelson0/puppet-domain_join/pull/7) ([rnelson0](https://github.com/rnelson0))
 
 ## [v0.3.1](https://github.com/rnelson0/puppet-domain_join/tree/v0.3.1) (2016-03-29)
