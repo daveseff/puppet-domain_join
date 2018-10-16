@@ -1,5 +1,7 @@
 spec/spec_helper.rb:
   hiera_config: 'spec/fixtures/hiera.yaml'
+.rubocop.yml:
+  selected_profile: off
 Gemfile:
   optional:
     ':development':
@@ -7,5 +9,3 @@ Gemfile:
         git: 'https://github.com/skywinder/github-changelog-generator'
         ref: '20ee04ba1234e9e83eb2ffb5056e23d641c7a018'
         condition: "Gem::Version.new(RUBY_VERSION.dup) >= Gem::Version.new('2.2.2')"
-.rubocop.yml:
-  selected_profile: off
