@@ -16,7 +16,6 @@ class domain_join (
   $interface = 'eno16780032',         # The interface associated with the DNS entry. Default for EL7 VMs.
   $join_domain = true,                # set to false to just run configuration and not join the domain.
 ) {
-
   $service_packages_tmp = [
     'oddjob-mkhomedir',
     'krb5-workstation',
