@@ -1,6 +1,6 @@
 {
   "name": "rnelson0-domain_join",
-  "version": "1.0.1",
+  "version": "1.0.1-rc",
   "author": "rnelson0",
   "summary": "Provides just enough configuration to join a Linux node to an Active Directory domain.",
   "license": "Apache-2.0",
