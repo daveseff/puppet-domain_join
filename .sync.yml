@@ -1,7 +1,4 @@
-spec/spec_helper.rb:
-  hiera_config: 'spec/fixtures/hiera.yaml'
-.rubocop.yml:
-  selected_profile: off
+---
 Gemfile:
   optional:
     ':development':
@@ -13,4 +10,3 @@ Rakefile:
   default_disabled_lint_checks:
     - '140chars'
     - 'arrow_alignment'
-
