@@ -56,6 +56,7 @@ class domain_join (
       file {'/etc/sssd/sssd.conf':
         ensure => present,
         content => template('domain_join/sssd.conf.erb'),
+        notify => Service['sssd'];
       }
     }
   }

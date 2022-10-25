@@ -2,6 +2,7 @@
  config_file_version = 2
  domains = <%= @domain_fqdn %>
  services = nss, pam, pac
+ default_domain_suffix = <%= @domain_fqdn %>
 
 [nss]
  nss_filter_groups = root
@@ -20,7 +21,8 @@
  access_provider = ad
  cache_credentials = true
  default_shell = /bin/bash
- ldap_id_mapping = False
+ fallback_homedir = /home/%u
+ ldap_id_mapping = True
  enumerate = TRUE
  cache_credentials = TRUE
 
